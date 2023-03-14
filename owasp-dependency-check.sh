@@ -1,6 +1,6 @@
 #!/bin/sh
 
-DC_VERSION="latest"
+DC_VERSION="23.0.1"
 DC_DIRECTORY=$HOME/OWASP-Dependency-Check
 DC_PROJECT="dependency-check scan: $(pwd)"
 DATA_DIRECTORY="$DC_DIRECTORY/data"
