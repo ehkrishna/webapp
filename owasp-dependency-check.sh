@@ -18,7 +18,7 @@ fi
 # Make sure we are using the latest version
 sudo docker pull owasp/dependency-check:$DC_VERSION
 
-sudo docker run --rm \
+sudo docker run --name owasp\
     -e user=$USER \
     -u $(id -u ${USER}):$(id -g ${USER}) \
     --volume $(pwd):/src:z \
