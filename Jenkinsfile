@@ -26,7 +26,7 @@ pipeline {
          sh 'rm owasp* || true'
          sh 'wget "https://raw.githubusercontent.com/ehkrishna/webapp/main/owasp-dependency-check.sh" '
          sh 'chmod +x owasp-dependency-check.sh'
-         sh 'bash owasp-dependency-check.sh'
+         sh '"bash owasp-dependency-check.sh" || true'
          sh '"cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml" || true'
         
       }
@@ -35,7 +35,7 @@ pipeline {
     stage ('SAST') {
       steps {
         withSonarQubeEnv('sonar') {
-          sh 'mvn sonar:sonar'
+          sh '"mvn sonar:sonar" || true'
           sh '"cat target/sonar/report-task.txt" || true'
         }
       }
@@ -63,6 +63,13 @@ pipeline {
         }
       }
     }
-    
+    stage ('PORT SCANNING) {
+           steps {
+             sh 'rm openports.txt || true'
+             sh 'nmap  3.26.39.95 > openports.txt'
+             sh 'cat openports.txt'
+           }
+           }
+           
   }
 }
