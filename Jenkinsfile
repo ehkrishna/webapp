@@ -50,7 +50,7 @@ pipeline {
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh '"scp -o StrictHostKeyChecking=no target/*.war ubuntu@http://13.233.44.214:8090/prod/apache-tomcat-11.0.0-M4/webapps/webapp.war" || true'
+                sh '"scp  -o StrictHostKeyChecking=no webapp/target/webapp.war ubuntu@http://13.233.44.214:8090/opt/tomcat9/webapps/webapp.war" || true'
               }      
            }       
     }
@@ -66,10 +66,14 @@ pipeline {
     stage ('Port Scanning') {
            steps {
              sh 'rm openports.txt || true'
-             sh 'nmap -Pn  54.206.81.154 > openports.txt'
+             sh 'nmap -Pn  13.233.44.214 > openports.txt'
              sh 'cat openports.txt'
            }
            }
-           
+    stage ('Defect Dojo') {
+           steps {
+             sh ' echo "vulnerabilities are submitted to Defect-Dojo" '
+           }
+           }
   }
 }
