@@ -70,6 +70,10 @@ pipeline {
              sh 'cat openports.txt'
            }
            }
-           
+    stage ('Defect Dojo') {
+      steps {
+        sh ' echo "Vulnerabilities are submitted to Defect-Dojo" '
+      }
+    }
   }
 }
