@@ -63,10 +63,10 @@ pipeline {
         }
       }
     }
-    stage ('PORT SCANNING) {
+    stage ('PORT SCANNING') {
            steps {
              sh 'rm openports.txt || true'
-             sh 'nmap  3.26.39.95 > openports.txt'
+             sh 'nmap -Pn  54.206.81.154 > openports.txt'
              sh 'cat openports.txt'
            }
            }
