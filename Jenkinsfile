@@ -50,7 +50,7 @@ pipeline {
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh '"scp -o StrictHostKeyChecking=no target/*.war ubuntu@54.206.81.154:/prod/apache-tomcat-8.5.39/webapps/webapp.war" || true'
+                sh '"scp -o StrictHostKeyChecking=no target/*.war ubuntu@http://13.233.44.214:8090/prod/apache-tomcat-11.0.0-M4/webapps/webapp.war" || true'
               }      
            }       
     }
@@ -59,21 +59,17 @@ pipeline {
     stage ('DAST') {
       steps {
         sshagent(['zap']) {
-         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.232.158.44 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://13.232.202.25:8080/webapp/" || true'
+         sh 'ssh -o  StrictHostKeyChecking=no ubuntu@13.232.158.44 "docker run -t owasp/zap2docker-stable zap-baseline.py -t http://13.233.44.214:8090/webapp/" || true'
         }
       }
     }
-    stage ('PORT SCANNING') {
+    stage ('Port Scanning') {
            steps {
              sh 'rm openports.txt || true'
              sh 'nmap -Pn  54.206.81.154 > openports.txt'
              sh 'cat openports.txt'
            }
            }
-    stage ('Defect Dojo') {
-      steps {
-        sh ' echo "Vulnerabilities are submitted to Defect-Dojo" '
-      }
-    }
+           
   }
 }
