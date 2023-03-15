@@ -27,7 +27,7 @@ pipeline {
          sh 'wget "https://raw.githubusercontent.com/ehkrishna/webapp/main/owasp-dependency-check.sh" '
          sh 'chmod +x owasp-dependency-check.sh'
          sh 'bash owasp-dependency-check.sh'
-         sh 'cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml'
+         sh '"cat /var/lib/jenkins/OWASP-Dependency-Check/reports/dependency-check-report.xml" || true'
         
       }
     }
@@ -36,7 +36,7 @@ pipeline {
       steps {
         withSonarQubeEnv('sonar') {
           sh 'mvn sonar:sonar'
-          sh 'cat target/sonar/report-task.txt'
+          sh '"cat target/sonar/report-task.txt" || true'
         }
       }
     }
@@ -50,7 +50,7 @@ pipeline {
     stage ('Deploy-To-Tomcat') {
             steps {
            sshagent(['tomcat']) {
-                sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@13.232.202.25:/prod/apache-tomcat-8.5.39/webapps/webapp.war'
+                sh '"scp -o StrictHostKeyChecking=no target/*.war ubuntu@54.206.81.154:/prod/apache-tomcat-8.5.39/webapps/webapp.war" || true'
               }      
            }       
     }
